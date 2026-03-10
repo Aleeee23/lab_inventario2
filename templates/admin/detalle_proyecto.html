@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Detalle del Proyecto</title>
+</head>
+
+<body class="bg-slate-950 text-white p-8">
+  <div class="max-w-5xl mx-auto">
+
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-bold">📌 {{ proyecto.nombre }}</h1>
+        <p class="text-white/70 mt-1">Detalle completo del proyecto seleccionado.</p>
+      </div>
+
+      <div class="flex gap-3">
+        <a href="{% url 'empleados_Alex:admin_asignar_empleado_proyecto' %}"
+           class="px-4 py-2 rounded-xl bg-emerald-600/40 hover:bg-emerald-600/60 border border-white/10">
+          + Asignar empleado
+        </a>
+
+        <a href="{% url 'empleados_Alex:admin_proyectos' %}"
+           class="px-4 py-2 rounded-xl bg-indigo-600/40 hover:bg-indigo-600/60 border border-white/10">
+          ← Volver
+        </a>
+      </div>
+    </div>
+
+    <!-- Info del proyecto -->
+    <div class="mt-6 grid md:grid-cols-2 gap-4">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5">
+        <p class="text-white/60 text-sm">Descripción</p>
+        <p class="mt-2">{{ proyecto.descripcion|default:"Sin descripción" }}</p>
+      </div>
+
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-3">
+        <div class="flex justify-between">
+          <span class="text-white/60">Activo</span>
+          {% if proyecto.activo %}
+            <span class="px-2 py-1 rounded-full bg-emerald-600/30 border border-emerald-300/20 text-sm">Sí</span>
+          {% else %}
+            <span class="px-2 py-1 rounded-full bg-red-600/30 border border-red-300/20 text-sm">No</span>
+          {% endif %}
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-white/60">Fecha inicio</span>
+          <span class="text-white/80">{{ proyecto.fecha_inicio|default:"—" }}</span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-white/60">Fecha fin</span>
+          <span class="text-white/80">{{ proyecto.fecha_fin|default:"—" }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empleados asignados -->
+    <div class="mt-6 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+      <div class="p-4 border-b border-white/10 flex items-center justify-between">
+        <h2 class="font-semibold">👥 Empleados asignados</h2>
+        <span class="text-xs text-white/50">Total: {{ asignaciones|length }}</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-white/5 text-white/70">
+            <tr>
+              <th class="text-left p-3">Usuario</th>
+              <th class="text-left p-3">Puesto</th>
+              <th class="text-left p-3">Departamento</th>
+              <th class="text-left p-3">Asignado</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in asignaciones %}
+              <tr class="border-t border-white/10 hover:bg-white/5">
+                <td class="p-3 font-medium">{{ a.empleado.user.username }}</td>
+                <td class="p-3">{{ a.empleado.puesto }}</td>
+                <td class="p-3">{{ a.empleado.departamento }}</td>
+                <td class="p-3">{{ a.fecha_asignacion }}</td>
+              </tr>
+            {% empty %}
+              <tr>
+                <td class="p-3 text-white/60" colspan="4">No hay empleados asignados a este proyecto.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

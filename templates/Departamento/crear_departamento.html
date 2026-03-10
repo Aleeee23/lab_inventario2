@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nuevo Departamento • GESPRO</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        fontFamily: { sans: ['Inter', 'sans-serif'] }
+      }
+    }
+  </script>
+
+  <style>
+    /* Fondo tecnológico */
+    .tech-bg {
+      background:
+        radial-gradient(800px circle at 20% 10%, rgba(99,102,241,.35), transparent 60%),
+        radial-gradient(900px circle at 90% 30%, rgba(34,197,94,.20), transparent 55%),
+        radial-gradient(700px circle at 50% 90%, rgba(56,189,248,.20), transparent 55%),
+        linear-gradient(180deg, #050816 0%, #070a1a 40%, #040612 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .tech-bg::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+      opacity:.35;
+      pointer-events:none;
+      mask-image: radial-gradient(circle at 50% 20%, rgba(0,0,0,1) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,0) 85%);
+    }
+    .glass {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .glow {
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 10px 30px rgba(0,0,0,.45),
+        0 0 40px rgba(99,102,241,.15);
+    }
+    .chip {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+
+    /* SweetAlert con Inter */
+    div:where(.swal2-container) { font-family: 'Inter', sans-serif !important; }
+  </style>
+</head>
+
+<body class="tech-bg min-h-screen text-white p-6">
+
+  <!-- Topbar -->
+  <header class="mx-auto max-w-4xl mt-4">
+    <div class="glass glow rounded-2xl px-5 py-4 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="h-11 w-11 rounded-xl bg-emerald-500/20 grid place-items-center">
+          <i data-feather="briefcase"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-wide">Departamentos</h1>
+          <p class="text-xs text-white/60">Alta de nueva área • GESPRO</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-2 chip rounded-full px-3 py-2">
+          <i data-feather="user" class="h-4 w-4"></i>
+          <span class="text-sm text-white/80">{{ user.username }}</span>
+        </div>
+
+        <a href="{% url 'empleados_Alex:home' %}"
+           class="chip rounded-xl px-4 py-2 hover:bg-white/10 transition">
+          ← Volver
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Card Form -->
+  <main class="mx-auto max-w-4xl mt-6">
+    <div class="glass glow rounded-2xl p-7 relative overflow-hidden">
+      <!-- glow decor -->
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-emerald-500/15 blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 mb-6">
+        <h2 class="text-2xl font-semibold tracking-tight">Registrar Departamento</h2>
+        <p class="text-white/60 text-sm mt-1">Ingresa los datos para crear una nueva área.</p>
+      </div>
+
+      <form method="post" id="departamentoForm" class="relative z-10 space-y-5">
+        {% csrf_token %}
+
+        {% for field in form %}
+          <div class="space-y-1">
+            <label for="{{ field.id_for_label }}" class="text-xs font-semibold text-white/70 uppercase tracking-wider ml-1">
+              {{ field.label }}
+            </label>
+
+            <div class="relative">
+              {{ field }}
+            </div>
+
+            {% if field.errors %}
+              <div class="django-error text-red-300 text-xs pl-1 flex items-center gap-1 mt-1">
+                <i data-feather="alert-triangle" class="h-4 w-4"></i>
+                {% for error in field.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <div class="pt-2 grid sm:grid-cols-2 gap-3">
+          <button type="submit"
+            class="w-full bg-emerald-600/35 hover:bg-emerald-600/55 text-white font-medium py-3.5 px-4 rounded-xl transition border border-white/10 flex justify-center items-center gap-2">
+            <span>Crear Departamento</span>
+            <i data-feather="arrow-right" class="h-4 w-4"></i>
+          </button>
+
+          <a href="{% url 'empleados_Alex:home' %}"
+             class="w-full text-center bg-white/5 hover:bg-white/10 text-white/90 font-medium py-3.5 px-4 rounded-xl transition border border-white/10">
+            Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+      feather.replace();
+
+      // ---- 1) Estilizar inputs (si tu form usa class="form-control") ----
+      const inputs = document.querySelectorAll('.form-control');
+
+      const baseClasses = [
+        'w-full',
+        'bg-slate-950/50', 'text-white', 'text-sm',
+        'border', 'border-white/10', 'rounded-xl',
+        'px-4', 'py-3',
+        'focus:bg-slate-950/70', 'focus:ring-2', 'focus:ring-indigo-400/20', 'focus:border-indigo-300/30',
+        'transition-all', 'duration-200', 'outline-none',
+        'placeholder-white/40'
+      ];
+
+      inputs.forEach(input => {
+        input.classList.add(...baseClasses);
+        if (input.tagName === 'TEXTAREA') input.classList.add('h-32', 'resize-none');
+      });
+
+      // ---- 2) Toast si hay errores ----
+      const hasErrors = document.querySelector('.django-error');
+      if (hasErrors) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3500,
+          timerProgressBar: true
+        });
+        Toast.fire({ icon: 'error', title: 'Revisa los campos marcados' });
+      }
+
+      // ---- 3) Confirmación SweetAlert ----
+      const form = document.getElementById('departamentoForm');
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        Swal.fire({
+          title: '¿Confirmar registro?',
+          text: "Se creará un nuevo departamento con esta información.",
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonColor: '#0f172a',
+          cancelButtonColor: '#64748b',
+          confirmButtonText: 'Sí, crear',
+          cancelButtonText: 'Cancelar',
+          background: '#0b1224',
+          color: '#fff',
+          customClass: {
+            popup: 'rounded-2xl border border-white/10',
+            confirmButton: 'rounded-lg px-6 py-3',
+            cancelButton: 'rounded-lg px-6 py-3'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: 'Procesando...',
+              html: 'Guardando datos en el sistema.',
+              timer: 1200,
+              timerProgressBar: true,
+              didOpen: () => Swal.showLoading(),
+              willClose: () => form.submit()
+            });
+          }
+        });
+      });
+
+    });
+  </script>
+
+</body>
+</html>

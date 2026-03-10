@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home - Dashboard</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Feather Icons -->
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <style>
+    /* Fondo tecnológico: grid + glow */
+    .tech-bg {
+      background:
+        radial-gradient(800px circle at 20% 10%, rgba(99,102,241,.35), transparent 60%),
+        radial-gradient(900px circle at 90% 30%, rgba(34,197,94,.20), transparent 55%),
+        radial-gradient(700px circle at 50% 90%, rgba(56,189,248,.20), transparent 55%),
+        linear-gradient(180deg, #050816 0%, #070a1a 40%, #040612 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .tech-bg::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+      opacity:.35;
+      pointer-events:none;
+      mask-image: radial-gradient(circle at 50% 20%, rgba(0,0,0,1) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,0) 85%);
+    }
+    .glass {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .glow {
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 10px 30px rgba(0,0,0,.45),
+        0 0 40px rgba(99,102,241,.15);
+    }
+    .chip {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .ring-soft {
+      box-shadow: 0 0 0 1px rgba(255,255,255,.08);
+    }
+  </style>
+</head>
+
+<body class="tech-bg min-h-screen text-white">
+  <!-- Topbar -->
+  <header class="sticky top-0 z-50">
+    <div class="glass glow mx-auto max-w-7xl mt-5 rounded-2xl px-5 py-4">
+      <div class="flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="h-11 w-11 rounded-xl bg-indigo-500/20 ring-soft grid place-items-center">
+            <i data-feather="cpu"></i>
+          </div>
+          <div>
+            <h1 class="text-xl font-bold tracking-wide">GESPRO</h1>
+            <p class="text-xs text-white/60">Panel de control • Sistema de gestión</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <div class="hidden sm:flex items-center gap-2 chip rounded-full px-3 py-2">
+            <i data-feather="user" class="h-4 w-4"></i>
+            <span class="text-sm text-white/80">
+              {{ user.username }}
+            </span>
+          </div>
+
+          <!-- ✅ Salir (requiere URL name="logout") -->
+          <a href="{% url 'logout' %}" class="chip rounded-xl px-4 py-2 hover:bg-white/10 transition">Salir</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="mx-auto max-w-7xl px-5 pb-10 pt-7 grid lg:grid-cols-12 gap-6">
+    <!-- Sidebar (más grande) -->
+    <aside class="lg:col-span-4">
+      <div class="glass glow rounded-2xl p-5">
+        <p class="text-sm text-white/60 mb-4 tracking-wide">NAVEGACIÓN</p>
+
+        <nav class="space-y-2">
+          <a href="{% url 'empleados_Alex:home' %}"
+             class="flex items-center gap-4 rounded-2xl px-4 py-4 bg-white/10 hover:bg-white/15 transition text-base">
+            <i data-feather="home" class="h-6 w-6"></i>
+            <span class="font-semibold">Inicio</span>
+            <span class="ml-auto text-xs text-white/70 chip rounded-full px-3 py-1">Active</span>
+          </a>
+
+          <a href="{% url 'empleados_Alex:datos_empleados' %}"
+             class="flex items-center gap-4 rounded-2xl px-4 py-4 hover:bg-white/10 transition text-base">
+            <i data-feather="users" class="h-6 w-6"></i>
+            <span class="font-semibold">Empleados</span>
+          </a>
+
+          <a href="{% url 'empleados_Alex:crea_departamento' %}"
+             class="flex items-center gap-4 rounded-2xl px-4 py-4 hover:bg-white/10 transition text-base">
+            <i data-feather="briefcase" class="h-6 w-6"></i>
+            <span class="font-semibold">Departamentos</span>
+          </a>
+
+          <a href="{% url 'empleados_Alex:lista_archivos' %}"
+             class="flex items-center gap-4 rounded-2xl px-4 py-4 hover:bg-white/10 transition text-base">
+            <i data-feather="folder" class="h-6 w-6"></i>
+            <span class="font-semibold">Archivos</span>
+          </a>
+
+          <a href="{% url 'empleados_Alex:admin_notificaciones' %}"
+             class="flex items-center gap-4 rounded-2xl px-4 py-4 hover:bg-white/10 transition text-base">
+            <i data-feather="bell" class="h-6 w-6"></i>
+            <span class="font-semibold">Notificaciones</span>
+          </a>
+
+          <a href="{% url 'empleados_Alex:admin_vacaciones' %}"
+             class="flex items-center gap-4 rounded-2xl px-4 py-4 hover:bg-white/10 transition text-base">
+            <i data-feather="check-circle" class="h-6 w-6"></i>
+            <span class="font-semibold">Vacaciones</span>
+          </a>
+
+          <a href="{% url 'empleados_Alex:admin_proyectos' %}"
+             class="flex items-center gap-4 rounded-2xl px-4 py-4 hover:bg-white/10 transition text-base">
+            <i data-feather="layers" class="h-6 w-6"></i>
+            <span class="font-semibold">Proyectos</span>
+          </a>
+
+        </nav>
+
+        <div class="mt-6 glass rounded-2xl p-5 border border-white/10">
+          <p class="text-base font-semibold">Estado del sistema</p>
+          <div class="mt-4 space-y-3 text-sm text-white/80">
+            <div class="flex items-center justify-between">
+              <span>Servidor</span>
+              <span class="chip rounded-full px-3 py-1 text-xs">ONLINE</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span>Entorno</span>
+              <span class="text-white/60 text-xs">DEV</span>
+            </div>
+            <div class="h-2.5 rounded-full bg-white/10 overflow-hidden">
+              <div class="h-full w-2/3 bg-indigo-400/70"></div>
+            </div>
+            <p class="text-xs text-white/50">Última actualización: ahora</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="lg:col-span-8 space-y-6">
+      <!-- Hero (SIN BOTONES) -->
+      <section class="glass glow rounded-2xl p-6">
+        <div>
+          <h2 class="text-2xl font-bold tracking-tight">
+            Bienvenido, <span class="text-indigo-300">{{ user.username }}</span>
+          </h2>
+          <p class="text-white/60 mt-1">
+            Accede rápido a tus módulos y operaciones del sistema.
+          </p>
+        </div>
+      </section>
+
+      <!-- Stats -->
+      <section class="grid md:grid-cols-3 gap-4">
+        <div class="glass glow rounded-2xl p-5">
+          <div class="flex items-center justify-between">
+            <p class="text-white/60 text-sm">Empleados</p>
+            <div class="h-9 w-9 rounded-xl bg-indigo-500/20 grid place-items-center">
+              <i data-feather="users" class="h-5 w-5"></i>
+            </div>
+          </div>
+          <p class="text-3xl font-bold mt-3">—</p>
+          <p class="text-xs text-white/50 mt-1">Total registrado (puede conectarse a DB)</p>
+        </div>
+
+        <div class="glass glow rounded-2xl p-5">
+          <div class="flex items-center justify-between">
+            <p class="text-white/60 text-sm">Departamentos</p>
+            <div class="h-9 w-9 rounded-xl bg-emerald-500/20 grid place-items-center">
+              <i data-feather="briefcase" class="h-5 w-5"></i>
+            </div>
+          </div>
+          <p class="text-3xl font-bold mt-3">—</p>
+          <p class="text-xs text-white/50 mt-1">Organización interna</p>
+        </div>
+
+        <div class="glass glow rounded-2xl p-5">
+          <div class="flex items-center justify-between">
+            <p class="text-white/60 text-sm">Archivos</p>
+            <div class="h-9 w-9 rounded-xl bg-sky-500/20 grid place-items-center">
+              <i data-feather="folder" class="h-5 w-5"></i>
+            </div>
+          </div>
+          <p class="text-3xl font-bold mt-3">—</p>
+          <p class="text-xs text-white/50 mt-1">Documentos y evidencias</p>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="text-center text-white/40 text-xs pt-2">
+        © {{ now|default:"2026" }} GESPRO • Dashboard UI
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    feather.replace();
+  </script>
+</body>
+</html>

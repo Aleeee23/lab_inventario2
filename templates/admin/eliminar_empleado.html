@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Eliminar empleado</title>
+</head>
+<body class="bg-slate-950 text-white p-8">
+  <div class="max-w-xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-6">
+
+    <h1 class="text-2xl font-bold">🗑️ Eliminar empleado</h1>
+    <p class="text-white/70 mt-2">
+      ¿Seguro que quieres eliminar a <span class="font-semibold">{{ object.user.username }}</span>?
+      <br>
+      Esto borrará también su foto y (si aplica) su usuario del sistema.
+    </p>
+
+    <form method="POST" class="mt-6 flex gap-3">
+      {% csrf_token %}
+      <button class="flex-1 py-3 rounded-xl bg-red-600/40 hover:bg-red-600/60 border border-white/10 font-semibold">
+        Sí, eliminar
+      </button>
+
+      <a href="{% url 'empleados_Alex:admin_empleados' %}"
+         class="flex-1 text-center py-3 rounded-xl bg-indigo-600/40 hover:bg-indigo-600/60 border border-white/10 font-semibold">
+        Cancelar
+      </a>
+    </form>
+
+  </div>
+</body>
+</html>

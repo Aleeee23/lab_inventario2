@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Asignar Empleado a Proyecto</title>
+</head>
+
+<body class="bg-slate-950 text-white p-8">
+  <div class="max-w-3xl mx-auto">
+
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-bold">👥➡️📁 Asignar Empleado</h1>
+        <p class="text-white/70 mt-1">Selecciona un empleado y un proyecto.</p>
+      </div>
+
+      <a href="{% url 'empleados_Alex:admin_proyectos' %}"
+         class="px-4 py-2 rounded-xl bg-indigo-600/40 hover:bg-indigo-600/60 border border-white/10">
+        ← Volver
+      </a>
+    </div>
+
+    {% if messages %}
+      <div class="mt-5 space-y-2">
+        {% for m in messages %}
+          <div class="p-3 rounded-xl bg-white/5 border border-white/10 text-white/80">
+            {{ m }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <form method="POST" class="mt-6 bg-white/5 border border-white/10 rounded-2xl p-6">
+      {% csrf_token %}
+
+      <label class="block text-sm text-white/70 mb-2">Empleado</label>
+      <select name="empleado_id" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3">
+        <option value="">-- Selecciona un empleado --</option>
+        {% for e in empleados %}
+          <option value="{{ e.id }}">{{ e.user.username }} - {{ e.puesto }}</option>
+        {% endfor %}
+      </select>
+
+      <label class="block text-sm text-white/70 mt-5 mb-2">Proyecto</label>
+      <select name="proyecto_id" class="w-full bg-slate-900 border border-white/10 rounded-xl p-3">
+        <option value="">-- Selecciona un proyecto --</option>
+        {% for p in proyectos %}
+          <option value="{{ p.id }}">{{ p.nombre }}</option>
+        {% endfor %}
+      </select>
+
+      <button type="submit"
+              class="mt-6 w-full px-4 py-3 rounded-xl bg-emerald-600/40 hover:bg-emerald-600/60 border border-white/10">
+        Asignar
+      </button>
+    </form>
+  </div>
+</body>
+</html>

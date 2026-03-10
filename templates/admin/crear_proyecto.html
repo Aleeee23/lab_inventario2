@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Crear Proyecto</title>
+</head>
+
+<body class="bg-slate-950 text-white p-8">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-bold">➕ Crear Proyecto</h1>
+        <p class="text-white/70 mt-1">Registra un nuevo proyecto en el sistema.</p>
+      </div>
+
+      <div class="flex gap-3">
+        <a href="{% url 'empleados_Alex:admin_proyectos' %}"
+           class="px-4 py-2 rounded-xl bg-indigo-600/40 hover:bg-indigo-600/60 border border-white/10">
+          📁 Ver Proyectos
+        </a>
+
+        <a href="{% url 'empleados_Alex:home' %}"
+           class="px-4 py-2 rounded-xl bg-slate-700/40 hover:bg-slate-700/60 border border-white/10">
+          ← Home
+        </a>
+      </div>
+    </div>
+
+    <!-- Mensajes -->
+    {% if messages %}
+      <div class="mt-6 space-y-3">
+        {% for message in messages %}
+          <div class="p-4 rounded-xl bg-emerald-600/20 border border-emerald-400/20 text-white/90">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    <!-- Formulario -->
+    <form method="POST" class="mt-6 bg-white/5 border border-white/10 rounded-2xl p-6 space-y-6">
+      {% csrf_token %}
+
+      <!-- Nombre -->
+      <div>
+        <label class="block text-sm text-white/70 mb-2">Nombre del proyecto</label>
+        {{ form.nombre }}
+      </div>
+
+      <!-- Descripción -->
+      <div>
+        <label class="block text-sm text-white/70 mb-2">Descripción</label>
+        {{ form.descripcion }}
+      </div>
+
+      <!-- Fechas -->
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-white/70 mb-2">Fecha inicio</label>
+          {{ form.fecha_inicio }}
+        </div>
+        <div>
+          <label class="block text-sm text-white/70 mb-2">Fecha fin</label>
+          {{ form.fecha_fin }}
+        </div>
+      </div>
+
+      <!-- Activo -->
+      <div class="flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-white/10">
+        {{ form.activo }}
+        <span class="text-white/80">Proyecto activo</span>
+      </div>
+
+      <!-- Botón -->
+      <button type="submit"
+              class="w-full px-4 py-3 rounded-xl bg-emerald-600/40 hover:bg-emerald-600/60 border border-white/10 transition">
+        💾 Guardar Proyecto
+      </button>
+    </form>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Proyectos</title>
+</head>
+<body class="bg-slate-950 text-white p-8">
+
+  <div class="max-w-6xl mx-auto">
+    <div class="flex items-center justify-between gap-4">
+      <div>
+        <h1 class="text-3xl font-bold">📁 Proyectos</h1>
+        <p class="text-white/70 mt-1">Aquí puedes ver proyectos y asignar empleados.</p>
+      </div>
+
+      <div class="flex gap-3">
+        <a href="{% url 'empleados_Alex:admin_asignar_empleado_proyecto' %}"
+           class="px-4 py-2 rounded-xl bg-emerald-600/40 hover:bg-emerald-600/60 border border-white/10">
+          + Asignar empleados
+        </a>
+
+        <a href="{% url 'empleados_Alex:crear_proyecto' %}"
+           class="px-4 py-2 rounded-xl bg-indigo-600/40 hover:bg-indigo-600/60 border border-white/10">
+          + Crear proyecto
+        </a>
+
+        <a href="{% url 'empleados_Alex:home' %}"
+           class="px-4 py-2 rounded-xl bg-indigo-600/40 hover:bg-indigo-600/60 border border-white/10">
+          ← Volver
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-6 bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+      <div class="p-4 border-b border-white/10">
+        <h2 class="font-semibold">Lista de proyectos</h2>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="text-white/70 bg-white/5">
+            <tr>
+              <th class="text-left p-3">Proyecto</th>
+              <th class="text-left p-3">Activo</th>
+              <th class="text-left p-3">Empleados asignados</th>
+              <th class="text-left p-3">Acciones</th> <!-- ✅ NUEVO -->
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data %}
+              <tr class="border-t border-white/10 hover:bg-white/5">
+                <td class="p-3 font-medium">
+                  <!-- ✅ Nombre clickeable (detalle) -->
+                  <a href="{% url 'empleados_Alex:admin_detalle_proyecto' item.proyecto.id %}" class="hover:underline">
+                    {{ item.proyecto.nombre }}
+                  </a>
+                </td>
+
+                <td class="p-3">
+                  {% if item.proyecto.activo %}
+                    <span class="px-2 py-1 rounded-full bg-emerald-600/30 border border-emerald-300/20">Sí</span>
+                  {% else %}
+                    <span class="px-2 py-1 rounded-full bg-red-600/30 border border-red-300/20">No</span>
+                  {% endif %}
+                </td>
+
+                <td class="p-3">{{ item.total }}</td>
+
+                <!-- ✅ Botón Ver detalle -->
+                <td class="p-3">
+                  <a href="{% url 'empleados_Alex:admin_detalle_proyecto' item.proyecto.id %}"
+                     class="px-3 py-2 rounded-lg bg-indigo-600/30 hover:bg-indigo-600/50 border border-white/10 transition">
+                    Ver detalle
+                  </a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr>
+                <!-- ✅ ahora son 4 columnas -->
+                <td class="p-3 text-white/60" colspan="4">No hay proyectos aún.</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <p class="text-xs text-white/40 mt-4"></p>
+  </div>
+
+</body>
+</html>

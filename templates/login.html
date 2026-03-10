@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iniciar sesión</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-6">
+  <div class="w-full max-w-md">
+    <!-- Card -->
+    <div class="bg-white/10 backdrop-blur rounded-2xl shadow-xl border border-white/10 p-8">
+      <div class="text-center mb-8">
+        <h1 class="text-2xl font-bold text-white">Bienvenido 👋</h1>
+        <p class="text-sm text-slate-300 mt-1">Inicia sesión para continuar</p>
+      </div>
+
+      {% if form.errors %}
+        <div class="mb-5 rounded-xl border border-red-400/30 bg-red-500/10 p-4 text-sm text-red-200">
+          Usuario o contraseña incorrectos. Intenta de nuevo.
+        </div>
+      {% endif %}
+
+      {% if next %}
+        <div class="mb-5 rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-200">
+          Necesitas iniciar sesión para acceder a esa sección.
+        </div>
+      {% endif %}
+
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+
+        <!-- Username -->
+        <div>
+          <label class="block text-sm font-medium text-slate-200 mb-2">
+            Usuario
+          </label>
+          <input
+            type="text"
+            name="username"
+            autofocus
+            required
+            placeholder="Tu usuario"
+            class="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 text-white placeholder:text-slate-400
+                   focus:outline-none focus:ring-2 focus:ring-cyan-400/60 focus:border-transparent"
+          />
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label class="block text-sm font-medium text-slate-200 mb-2">
+            Contraseña
+          </label>
+          <input
+            type="password"
+            name="password"
+            required
+            placeholder="Tu contraseña"
+            class="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 text-white placeholder:text-slate-400
+                   focus:outline-none focus:ring-2 focus:ring-cyan-400/60 focus:border-transparent"
+          />
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-between">
+          <label class="inline-flex items-center gap-2 text-sm text-slate-300 select-none">
+            <input type="checkbox" class="rounded border-white/20 bg-white/10" />
+            Recordarme
+          </label>
+
+          <a href="#" class="text-sm text-cyan-300 hover:text-cyan-200">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-cyan-400 text-slate-900 font-semibold py-3
+                 hover:bg-cyan-300 transition shadow-lg shadow-cyan-500/20"
+        >
+          Entrar
+        </button>
+
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+
+      <p class="text-center text-xs text-slate-400 mt-6">
+        © {{ now|date:"Y" }} Sistema de Gestión
+      </p>
+    </div>
+  </div>
+</body>
+</html>

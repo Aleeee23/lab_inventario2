@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Panel • GESPRO</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/feather-icons"></script>
+
+  <style>
+    .tech-bg {
+      background:
+        radial-gradient(800px circle at 20% 10%, rgba(99,102,241,.35), transparent 60%),
+        radial-gradient(900px circle at 90% 30%, rgba(34,197,94,.20), transparent 55%),
+        radial-gradient(700px circle at 50% 90%, rgba(56,189,248,.20), transparent 55%),
+        linear-gradient(180deg, #050816 0%, #070a1a 40%, #040612 100%);
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .tech-bg::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background-image:
+        linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+      background-size: 44px 44px;
+      opacity:.35;
+      pointer-events:none;
+      mask-image: radial-gradient(circle at 50% 20%, rgba(0,0,0,1) 0%, rgba(0,0,0,.35) 55%, rgba(0,0,0,0) 85%);
+    }
+
+    .glass {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      backdrop-filter: blur(14px);
+    }
+
+    .glow {
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06) inset,
+        0 10px 30px rgba(0,0,0,.45),
+        0 0 40px rgba(99,102,241,.15);
+    }
+
+    .chip {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+  </style>
+</head>
+
+<body class="tech-bg text-white">
+
+<header class="sticky top-0 z-50">
+  <div class="glass glow mx-auto max-w-7xl mt-5 rounded-2xl px-5 py-4">
+
+    <div class="flex items-center justify-between">
+
+      <div class="flex items-center gap-3">
+        <div class="h-11 w-11 rounded-xl bg-indigo-500/20 grid place-items-center">
+          <i data-feather="user"></i>
+        </div>
+
+        <div>
+          <h1 class="text-xl font-bold tracking-wide">Mi Panel</h1>
+          <p class="text-xs text-white/60">Portal del empleado • GESPRO</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+
+        <div class="hidden sm:flex items-center gap-2 chip rounded-full px-3 py-2">
+          <i data-feather="user" class="h-4 w-4"></i>
+          <span class="text-sm text-white/80">{{ user.username }}</span>
+        </div>
+
+        <a href="{% url 'logout' %}" class="chip rounded-xl px-4 py-2 hover:bg-white/10 transition">
+          Salir
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+</header>
+
+
+<main class="mx-auto max-w-7xl px-5 pb-12 pt-7 space-y-6">
+
+<section class="glass glow rounded-2xl p-6">
+
+<div class="flex flex-col md:flex-row md:items-center gap-5">
+
+<div class="flex-shrink-0">
+
+{% if empleado.foto_perfil %}
+<img src="{{ empleado.foto_perfil.url }}"
+class="h-24 w-24 rounded-2xl object-cover border border-white/10">
+{% else %}
+<div class="h-24 w-24 rounded-2xl bg-white/10 grid place-items-center">
+<i data-feather="user" class="h-8 w-8 text-white/70"></i>
+</div>
+{% endif %}
+
+</div>
+
+<div class="flex-1">
+
+<h2 class="text-3xl font-bold">
+Bienvenido, <span class="text-indigo-300">{{ user.username }}</span>
+</h2>
+
+<p class="text-white/60 mt-2">
+Aquí puedes consultar tu información, tus proyectos y tus accesos personales.
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="grid md:grid-cols-4 gap-4">
+
+<div class="glass glow rounded-2xl p-5">
+<p class="text-white/60 text-sm">Puesto</p>
+<p class="text-xl font-bold mt-2">{{ empleado.puesto }}</p>
+</div>
+
+<div class="glass glow rounded-2xl p-5">
+<p class="text-white/60 text-sm">Departamento</p>
+<p class="text-xl font-bold mt-2">{{ empleado.departamento }}</p>
+</div>
+
+<div class="glass glow rounded-2xl p-5">
+<p class="text-white/60 text-sm">Usuario</p>
+<p class="text-xl font-bold mt-2">{{ empleado.user.username }}</p>
+</div>
+
+<div class="glass glow rounded-2xl p-5">
+<p class="text-white/60 text-sm">Fecha de ingreso</p>
+<p class="text-xl font-bold mt-2">
+{{ empleado.fecha_inicio|default:"No registrada" }}
+</p>
+</div>
+
+</section>
+
+
+<section class="glass glow rounded-2xl p-6">
+
+<div class="mb-4">
+<h3 class="text-xl font-bold">Accesos rápidos</h3>
+<p class="text-white/60 text-sm mt-1">Tus opciones principales dentro del sistema.</p>
+</div>
+
+
+<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+
+<a href="{% url 'empleados_Alex:usuario_vacaciones' %}"
+class="group rounded-2xl p-5 glass hover:bg-white/10 transition border border-white/10">
+
+<div class="flex items-start justify-between">
+
+<div class="h-10 w-10 rounded-xl bg-emerald-500/20 grid place-items-center">
+<i data-feather="calendar"></i>
+</div>
+
+<i data-feather="arrow-up-right"
+class="text-white/50 group-hover:text-white transition"></i>
+
+</div>
+
+<h4 class="mt-4 font-semibold">Mis vacaciones</h4>
+
+<p class="text-sm text-white/60 mt-1">
+Solicitar y revisar el estado de tus vacaciones.
+</p>
+
+</a>
+
+
+<a href="{% url 'empleados_Alex:usuario_notificaciones' %}"
+class="group rounded-2xl p-5 glass hover:bg-white/10 transition border border-white/10">
+
+<div class="flex items-start justify-between">
+
+<div class="h-10 w-10 rounded-xl bg-amber-500/20 grid place-items-center">
+<i data-feather="bell"></i>
+</div>
+
+<i data-feather="arrow-up-right"
+class="text-white/50 group-hover:text-white transition"></i>
+
+</div>
+
+<h4 class="mt-4 font-semibold">Mis notificaciones</h4>
+
+<p class="text-sm text-white/60 mt-1">
+Consulta avisos y mensajes importantes del sistema.
+</p>
+
+</a>
+
+
+<a href="{% url 'empleados_Alex:lista_archivos' %}"
+class="group rounded-2xl p-5 glass hover:bg-white/10 transition border border-white/10">
+
+<div class="flex items-start justify-between">
+
+<div class="h-10 w-10 rounded-xl bg-sky-500/20 grid place-items-center">
+<i data-feather="folder"></i>
+</div>
+
+<i data-feather="arrow-up-right"
+class="text-white/50 group-hover:text-white transition"></i>
+
+</div>
+
+<h4 class="mt-4 font-semibold">Archivos</h4>
+
+<p class="text-sm text-white/60 mt-1">
+Consulta archivos y documentos disponibles.
+</p>
+
+</a>
+
+
+</div>
+
+</section>
+
+
+<section class="glass glow rounded-2xl p-6">
+
+<div class="mb-4">
+<h3 class="text-xl font-bold">Mis proyectos asignados</h3>
+<p class="text-white/60 text-sm mt-1">
+Estos son los proyectos en los que estás participando.
+</p>
+</div>
+
+<div class="space-y-3">
+
+{% for asignacion in proyectos_asignados %}
+
+<div class="glass rounded-2xl p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+
+<div>
+<p class="font-semibold text-lg">
+{{ asignacion.proyecto.nombre }}
+</p>
+
+<p class="text-sm text-white/60">
+Proyecto asignado a tu perfil
+</p>
+</div>
+
+<span class="chip rounded-full px-3 py-1 text-xs">
+ACTIVO
+</span>
+
+</div>
+
+{% empty %}
+
+<div class="glass rounded-2xl p-4 text-white/60">
+Aún no tienes proyectos asignados.
+</div>
+
+{% endfor %}
+
+</div>
+
+</section>
+
+
+<footer class="text-center text-white/40 text-xs pt-2">
+© 2026 GESPRO • Portal del Empleado
+</footer>
+
+</main>
+
+<script>
+feather.replace()
+</script>
+
+</body>
+</html>
